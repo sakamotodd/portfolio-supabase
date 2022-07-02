@@ -8,15 +8,40 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
+    "@mantine/core": "^4.2.11",
+    "@mantine/dates": "^4.2.11",
+    "@mantine/form": "^4.2.11",
+    "@mantine/hooks": "^4.2.11",
+    "@mantine/next": "^4.2.11",
+    "@mantine/notifications": "^4.2.11",
+    "@supabase/supabase-js": "^1.35.4",
+    "axios": "^0.27.2",
+    "date-fns": "^2.28.0",
+    "dayjs": "^1.11.3",
     "next": "12.2.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-query": "4.0.0-beta.10",
+    "tabler-icons-react": "^1.52.0",
+    "tailwindcss-autofill": "^1.0.2",
+    "yup": "^0.32.11",
+    "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
+    "autoprefixer": "^10.4.7",
+    "babel-plugin-module-resolver": "^4.1.0",
     "eslint": "7",
     "eslint-config-next": "12.2.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "postcss": "^8.4.14",
+    "prettier": "^2.7.1",
+    "prettier-plugin-tailwindcss": "^0.1.11",
+    "tailwindcss": "^3.1.4",
     "typescript": "4.7.4"
   }
 }
