@@ -1,15 +1,52 @@
+import { supabase } from "@/util/supabase";
+import { MantineProvider } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
 import { AppProps } from "next/app";
+import { useRouter } from "next/router";
 import NextNprogre from "nextjs-progressbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import "tailwindcss/tailwind.css";
 import "../styles/globals.css";
 import "../styles/Header.css";
 import "../styles/markdown.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const { push, pathname } = useRouter();
+  const validateSession = async () => {
+    const user = supabase.auth.user();
+    if (user) {
+      switch (pathname) {
+        case "/":
+          push("/content");
+          break;
+        case "/login/signIn":
+          push("/content");
+          break;
+        case "/login/signUp":
+          push("/content");
+          break;
+      }
+    } else if (!user && pathname === "/content") {
+      await push("/login/signIn");
+    }
+  };
+  supabase.auth.onAuthStateChange((event, _) => {
+    console.log(event);
+    if (
+      event === "SIGNED_IN" &&
+      (pathname === "/login/signIn" || pathname === "/login/signUp")
+    ) {
+      push("/content");
+    }
+    if (event === "SIGNED_OUT") {
+      push("/login/signIn");
+    }
+  });
+  useEffect(() => {
+    validateSession();
+  }, []);
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -43,7 +80,18 @@ function MyApp({ Component, pageProps }: AppProps) {
             },
           }}
         />
-        <Component {...pageProps} />
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={{
+            colorScheme: "light",
+            fontFamily: "Verdana, sans-serif",
+          }}
+        >
+          <NotificationsProvider limit={2}>
+            <Component {...pageProps} />
+          </NotificationsProvider>
+        </MantineProvider>
       </Hydrate>
       <ReactQueryDevtools />
     </QueryClientProvider>

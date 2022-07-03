@@ -40,7 +40,8 @@ module.exports = {
         violet9: "#581f8e",
       },
       boxShadow: {
-        "3xl": "0 20px 25px -5px rgba(230, 180, 15, 0.9), 0 10px 10px 5px rgba(8, 131, 161, 0.9)",
+        "3xl":
+          "0 20px 25px -5px rgba(230, 180, 15, 0.9), 0 10px 10px 5px rgba(8, 131, 161, 0.9)",
         bottom: "0px 10px 10px -5px rgba(0,0,0,0.1)",
       },
       fontFamily: {
@@ -67,4 +68,7 @@ module.exports = {
       addUtilities(newUtilities);
     },
   ],
+  corePlugins: {
+    preflight: false,
+  },
 };

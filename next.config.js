@@ -8,6 +8,7 @@ module.exports = {
       "www.gravatar.com",
       "firebasestorage.googleapis.com",
       "images.unsplash.com",
+      "wuzyztmgfagjrstzpbcc.supabase.co",
     ],
   },
   pageExtensions: ["page.tsx", "page.ts"],
