@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.markdown h1 {
+  @apply text-3xl mb-4 border-b-2 font-bold;
+}
+
+.markdown h2 {
+  @apply text-2xl font-semibold my-2;
+}
+
+.markdown h3 {
+  @apply text-xl font-medium my-2;
+}
+
+.markdown p {
+  @apply whitespace-pre-wrap;
+}
+
+.markdown p a {
+  @apply bg-indigo9;
+}
+
+.markdown p a:visited {
+  @apply bg-violet9;
+}
+
+.markdown ul li {
+  @apply list-inside;
+}
+.markdown ul li ul {
+  @apply ml-4;
+}
+.markdown ol li {
+  @apply list-inside list-decimal;
+}
+.markdown table {
+  @apply border border-solid border-gray-500;
+}
+.markdown table thead {
+  @apply bg-slate-400;
+}
+.markdown table thead tr {
+  @apply border-b border-solid border-gray-500;
+}
+.markdown table thead tr th {
+  @apply border-r border-solid border-gray-500;
+
+}
+.markdown table thead tr th:last-child {
+  @apply border-r-0;
+}
+.markdown tbody tr {
+  @apply border-b border-solid border-gray-500;
+}
+.markdown tbody tr:last-child {
+  @apply border-b-0;
+}
+.markdown tbody tr td {
+  @apply border-r border-solid border-gray-500;
+}
+.markdown tbody tr td:last-child {
+  @apply border-r-0;
+}
+.markdown blockquote {
+@apply text-[0.95rem] m-6 border-l-2 border-solid border-gray-400 p-3 bg-slate-700
+}
