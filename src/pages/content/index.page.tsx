@@ -87,7 +87,7 @@ const ContentPage: NextPage<StaticProps> = ({ notes }) => {
           <div className="fixed right-20 bottom-12 md:right-40">
             <button
               className="flex h-12 w-32 cursor-pointer items-center justify-center rounded-full bg-indigo-600 leading-7 hover:bg-indigo-500 maxLg:w-12 maxLg:rounded-full"
-              onClick={() => handleMovePage("/post")}
+              onClick={() => handleMovePage("/edit")}
             >
               <PencilIcon className="h-4 w-4 text-white" />
               <span className="pl-2 text-center text-sm text-white maxLg:hidden">
@@ -179,7 +179,6 @@ export const getStaticProps: GetStaticProps = async () => {
     .select(
       "id, created_at, content, user_id, title, openFlag, users (email, full_name, avatar_url)",
     );
-  // const { data: users } = await supabase.from("users").select("*");
   if (error) {
     throw new Error(`${error.message}: ${error.details}`);
   }

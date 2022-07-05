@@ -82,7 +82,7 @@ export const SideBar: FC<SideBarDTO> = ({
     },
     {
       id: 2,
-      path: "post",
+      path: "edit",
       Icon: PencilAltIcon,
       text: "投稿",
     },

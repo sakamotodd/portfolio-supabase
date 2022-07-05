@@ -10,12 +10,18 @@ export interface NoteDTO {
   id: string;
   title: string;
   content: string;
-  openFlag: string;
+  openFlag: boolean;
   user_id: string;
   created_at: string;
   users: UsersDTO;
 }
 
+export interface EditNoteDTO {
+  content: string;
+  title: string;
+  openFlag: boolean;
+  user_id: string | undefined;
+}
 export interface NewsDTO {
   id: string;
   content: string;
@@ -80,16 +86,6 @@ export interface NewsVariableDTO {
   isFlag: boolean;
 }
 
-export interface EditNewsDTO {
-  id: string;
-  content: string;
-  title: string;
-  name: string;
-  email: string;
-  photoURL: string;
-  isFlag: boolean;
-}
-
 export interface UpdateNewsDTO {
   id: string;
   content: string;
@@ -128,7 +124,6 @@ export interface UpdateTaskDTO {
 export interface LayoutDTO {
   children: ReactNode;
   title: string;
-  styles: string;
   setDarkMode?: React.Dispatch<React.SetStateAction<boolean>>;
   darkMode?: boolean;
   listFlag?: boolean;

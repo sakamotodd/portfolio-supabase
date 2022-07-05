@@ -3,7 +3,7 @@ import { LayoutDTO } from '../interface/types';
 import { Header } from './Header';
 import { SideBar } from './SideBar.tsx';
 
-export const Layout: FC<LayoutDTO> = ({ children, title, styles }) => {
+export const Layout: FC<LayoutDTO> = ({ children, title }) => {
   const [darkMode, setDarkMode] = useState(false);
   const [listFlag, setListFlag] = useState(false);
   const listClickRef = useRef<HTMLButtonElement>(null!);

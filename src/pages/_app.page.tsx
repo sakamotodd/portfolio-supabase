@@ -13,28 +13,31 @@ import "../styles/Header.css";
 import "../styles/markdown.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { push, pathname } = useRouter();
+  const router = useRouter();
+  const pathName = ["content", "edit", "setting", "profile", "search"];
   const validateSession = async () => {
     console.log(
       "🚀 ~ file: _app.page.tsx ~ line 17 ~ MyApp ~ pathname",
-      pathname,
+      router.pathname,
     );
     const user = supabase.auth.user();
+    const path = pathName.find((name) => {
+      return router.pathname === name;
+    });
     if (user) {
-      switch (pathname) {
-        case "/":
-          await push("/content");
-          break;
-        case "/login/signIn":
-          await push("/content");
-          break;
-        case "/login/signUp":
-          await push("/content");
-          break;
+      if (path) {
+        router.push(`/${path}`);
       }
-    } else if (!user && pathname === "/content") {
-      await push("/login/signIn");
-    }
+      if (
+        router.pathname === "/login/signUp" ||
+        router.pathname === "/login/signIn" ||
+        router.pathname === "/content"
+      ) {
+        return router.push("/content");
+      }
+    } else if (!user && path) {
+      await router.push("/login/signIn");
+    } else return;
   };
   supabase.auth.onAuthStateChange((event, session) => {
     console.log(
@@ -42,10 +45,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       event,
     );
     if (event === "SIGNED_IN") {
-      push("/content");
+      router.push("/content");
     }
     if (event === "SIGNED_OUT") {
-      push("/login/signIn");
+      router.push("/login/signIn");
     }
   });
   useEffect(() => {
