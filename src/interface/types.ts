@@ -1,10 +1,25 @@
 import { ReactNode } from "react";
 
+
+export interface UsersDTO {
+  full_name: string;
+  avatar_url: string;
+  email: string;
+}
+export interface NoteDTO {
+  id: string;
+  title: string;
+  content: string;
+  openFlag: string;
+  user_id: string;
+  created_at: string;
+  users: UsersDTO;
+}
+
 export interface NewsDTO {
   id: string;
   content: string;
   created_at: string;
-  orderNo: number;
   title: string;
   name: string;
   email: string;

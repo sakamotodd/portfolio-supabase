@@ -1,16 +1,22 @@
 import { supabase } from "@/util/supabase";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { FC, useCallback } from "react";
 
 export const GithubAndGoogleButton: FC = () => {
+  const router = useRouter();
   const loginWithGithub = useCallback(async () => {
-    supabase.auth.signIn({ provider: "github" });
-
+    const { error } = await supabase.auth.signIn({
+      provider: "github",
+    });
+    if (error) {
+      alert(error.message);
+    }
   }, []);
 
-    const loginWithGoogle = useCallback(async () => {
-      supabase.auth.signIn({ provider: "google" });
-    }, []);
+  const loginWithGoogle = useCallback(async () => {
+    supabase.auth.signIn({ provider: "google" });
+  }, []);
 
   return (
     <div>
@@ -20,7 +26,7 @@ export const GithubAndGoogleButton: FC = () => {
       <div>
         <div className="mt-3 flex items-center justify-center space-x-6">
           <button
-            className="flex transform items-center rounded border border-transparent bg-sky-100 py-2 px-4 text-sm font-medium uppercase text-indigo-500 shadow-md transition hover:-translate-y-0.5 hover:border-transparent hover:bg-sky-200 hover:text-gray-700 hover:shadow-lg"
+            className="flex transform items-center rounded border border-transparent bg-sky-100 py-2 px-4 text-sm font-medium uppercase text-indigo-500 shadow-md transition hover:-translate-y-0.5 hover:border-transparent hover:bg-gray-200 hover:text-gray-700 hover:shadow-lg"
             onClick={loginWithGithub}
           >
             <div className="mr-3">

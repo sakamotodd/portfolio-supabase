@@ -10,7 +10,7 @@ export default class _Document extends Document {
         <Head>
           <meta name="application-name" content="MyApp" />
         </Head>
-        <body>
+        <body className="light:text-black light:bg-slate-100 dark:bg-darkGrey dark:text-white">
           <Main />
           <NextScript />
         </body>

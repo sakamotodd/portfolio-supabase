@@ -152,7 +152,7 @@ export const MailFormSignUp: FC = () => {
           >
             ログインはこちら
           </Anchor>
-          <Button type="submit" color="blue" variant="filled">
+          <Button type="submit" className="bg-blue-500 hover:bg-blue-400">
             Login
           </Button>
         </Group>

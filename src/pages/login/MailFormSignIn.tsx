@@ -82,7 +82,7 @@ export const MailFormSignIn: FC = () => {
           >
             アカウント登録はこちら
           </Anchor>
-          <Button type="submit" color="blue">
+          <Button type="submit" className="bg-blue-500 hover:bg-blue-400">
             Login
           </Button>
         </Group>

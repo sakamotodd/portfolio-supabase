@@ -69,7 +69,12 @@ export const Lan_skills: FC = () => {
           }}
         />
         <div className="mt-2 flex justify-center xl:mr-8">
-          <Image src="/icons/javascript.png" alt="javascript" width={60} height={60} />
+          <Image
+            src="/icons/javascript.png"
+            alt="javascript"
+            width={60}
+            height={60}
+          />
         </div>
       </div>
 
@@ -92,7 +97,12 @@ export const Lan_skills: FC = () => {
           }}
         />
         <div className="mt-2 flex justify-center">
-          <Image src="/icons/reactjs_icon.png" alt="react" width={130} height={60} />
+          <Image
+            src="/icons/reactjs_icon.png"
+            alt="react"
+            width={130}
+            height={60}
+          />
         </div>
       </div>
 
@@ -138,7 +148,12 @@ export const Lan_skills: FC = () => {
           }}
         />
         <div className="mt-4 flex justify-center xl:mr-8">
-          <Image src="/icons/typescript.png" alt="typescript" width={45} height={45} />
+          <Image
+            src="/icons/typescript.png"
+            alt="typescript"
+            width={45}
+            height={45}
+          />
         </div>
       </div>
 

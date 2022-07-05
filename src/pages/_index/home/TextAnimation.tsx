@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/dist/TextPlugin';
-import { ReactElement, useCallback } from 'react';
+import { ClassAttributes, LegacyRef, ReactElement, useCallback } from 'react';
 
 type Props = {
   children: React.ReactNode;
@@ -8,16 +8,19 @@ type Props = {
 };
 
 const TextAnimation = (props: Props): ReactElement => {
-  const textRef = useCallback((node) => {
-    if (node !== null) {
-      const text = node.innerHTML; //テキストを読み込む
-      const height = node.clientHeight; //高さを取得する
-      node.innerHTML = ''; //テキストを削除する
-      node.style.height = height + 'px'; //高さを設定する
-      setAnimation(text);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const textRef = useCallback(
+    (node: any) => {
+      if (node !== null) {
+        const text = node.innerHTML; //テキストを読み込む
+        const height = node.clientHeight; //高さを取得する
+        node.innerHTML = ""; //テキストを削除する
+        node.style.height = height + "px"; //高さを設定する
+        setAnimation(text);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [],
+  );
   const setAnimation = (text: string) => {
     const numText = text.length;
     const selector = '#' + props.section;

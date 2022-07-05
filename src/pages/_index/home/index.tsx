@@ -1,10 +1,9 @@
-import Image from 'next/image';
-import React, { VFC } from 'react';
-import { Link as Scroll } from 'react-scroll';
-import TextAnimation from './TextAnimation';
+import { FC } from "react";
+import { Link as Scroll } from "react-scroll";
+import TextAnimation from "./TextAnimation";
 
-const Home: VFC = () => {
-  const headerBtn = ['Home', 'Skill', 'Portfolio', 'Contact'];
+const Home: FC = () => {
+  const headerBtn = ["Home", "Skill", "Portfolio", "Contact"];
   const profileText = `
   はじめまして。坂本大五郎と申します。\n
   SES企業で２年間働いていました。\n
@@ -14,13 +13,15 @@ const Home: VFC = () => {
   `;
   return (
     <header id="Home" className="relative max-h-screen">
-      <div className="flex fixed z-10 justify-between items-center p-4 w-screen bg-gray-800 opacity-50">
-        <p className="maxLg:hidden pl-8 text-xl font-bold text-indigo-400">Daigoro Sakamoto</p>
-        <div className="pr-8 space-x-4 text-white">
+      <div className="fixed z-10 flex w-screen items-center justify-between bg-gray-800 p-4 opacity-50">
+        <p className="pl-8 text-xl font-bold text-indigo-400 maxLg:hidden">
+          Daigoro Sakamoto
+        </p>
+        <div className="space-x-4 pr-8 text-white">
           {headerBtn.map((btn) => {
             return (
               <Scroll key={btn} to={btn} smooth={true} duration={600}>
-                <button className="p-2 hover:bg-gray-400 focus:bg-gray-300 rounded focus:ring-2 focus:ring-opacity-50 focus:outline-none">
+                <button className="rounded p-2 hover:bg-gray-400 focus:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-opacity-50">
                   {btn}
                 </button>
               </Scroll>
@@ -28,14 +29,16 @@ const Home: VFC = () => {
           })}
         </div>
       </div>
-      <div className="absolute top-1/4 left-1/2 z-10 pr-2 mx-auto text-5xl text-white truncate transform -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute top-1/4 left-1/2 z-10 mx-auto -translate-x-1/2 -translate-y-1/2 transform truncate pr-2 text-5xl text-white">
         <div id="thank" className="flex justify-between">
-          <TextAnimation section="thank">Thank you for visit Portfolio</TextAnimation>
+          <TextAnimation section="thank">
+            Thank you for visit Portfolio
+          </TextAnimation>
           <p>|</p>
         </div>
       </div>
-      <div className="flex z-20 flex-col justify-center items-center m-auto min-h-screen">
-        <p className="leading-3 whitespace-pre-wrap">{profileText}</p>
+      <div className="z-20 m-auto flex min-h-screen flex-col items-center justify-center">
+        <p className="whitespace-pre-wrap leading-3">{profileText}</p>
       </div>
     </header>
   );

@@ -1,3 +1,4 @@
+import "@/styles/globals.css";
 import { supabase } from "@/util/supabase";
 import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
@@ -8,36 +9,39 @@ import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import "../styles/globals.css";
 import "../styles/Header.css";
 import "../styles/markdown.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { push, pathname } = useRouter();
   const validateSession = async () => {
+    console.log(
+      "🚀 ~ file: _app.page.tsx ~ line 17 ~ MyApp ~ pathname",
+      pathname,
+    );
     const user = supabase.auth.user();
     if (user) {
       switch (pathname) {
         case "/":
-          push("/content");
+          await push("/content");
           break;
         case "/login/signIn":
-          push("/content");
+          await push("/content");
           break;
         case "/login/signUp":
-          push("/content");
+          await push("/content");
           break;
       }
     } else if (!user && pathname === "/content") {
       await push("/login/signIn");
     }
   };
-  supabase.auth.onAuthStateChange((event, _) => {
-    console.log(event);
-    if (
-      event === "SIGNED_IN" &&
-      (pathname === "/login/signIn" || pathname === "/login/signUp")
-    ) {
+  supabase.auth.onAuthStateChange((event, session) => {
+    console.log(
+      "🚀 ~ file: _app.page.tsx ~ line 37 ~ supabase.auth.onAuthStateChange ~ event",
+      event,
+    );
+    if (event === "SIGNED_IN") {
       push("/content");
     }
     if (event === "SIGNED_OUT") {
