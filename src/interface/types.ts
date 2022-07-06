@@ -1,10 +1,20 @@
 import { ReactNode } from "react";
 
-
+export interface AvatarDTO {
+  avatar_url: string;
+}
 export interface UsersDTO {
   full_name: string;
   avatar_url: string;
   email: string;
+}
+export interface CommentsDTO {
+  id: string;
+  title: string;
+  content: string;
+  created_at: string;
+  note_id: string;
+  user_id: string | undefined;
 }
 export interface NoteDTO {
   id: string;
@@ -16,12 +26,31 @@ export interface NoteDTO {
   users: UsersDTO;
 }
 
+export interface PrivateNoteDTO {
+  id: string;
+  title: string;
+  content: string;
+  openFlag: boolean;
+  user_id: string;
+  created_at: string;
+  users: UsersDTO;
+  comments: CommentsDTO[];
+}
+
 export interface EditNoteDTO {
   content: string;
   title: string;
   openFlag: boolean;
   user_id: string | undefined;
 }
+
+export interface EditCommentsDTO {
+  content: string;
+  title: string;
+  note_id: string;
+  user_id: string | undefined;
+}
+
 export interface NewsDTO {
   id: string;
   content: string;

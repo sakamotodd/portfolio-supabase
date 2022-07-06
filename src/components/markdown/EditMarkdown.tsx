@@ -1,7 +1,9 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useMutateContent } from "@/hooks/useMutateContent";
+import Error from "@/pages/_error.page";
 import useStore from "@/redux/store";
 import { supabase } from "@/util/supabase";
+
 import { FC, FormEvent } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
@@ -32,6 +34,11 @@ const EditMarkdown: FC = () => {
 
   if (createNoteMutation.isLoading) {
     return <Spinner />;
+  }
+
+  if (createNoteMutation.error) {
+    const status = Number(createNoteMutation.error)
+    return <Error statusCode={status} />;
   }
 
   return (

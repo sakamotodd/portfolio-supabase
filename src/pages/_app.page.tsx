@@ -35,7 +35,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       ) {
         return router.push("/content");
       }
-    } else if (!user && path) {
+    } else if (!user && router.pathname !== "/") {
       await router.push("/login/signIn");
     } else return;
   };

@@ -1,8 +1,9 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { supabase } from "@/util/supabase";
+import { useQueryAvatarImage } from "@/hooks/useQueryAvatarImage";
+import Error from "@/pages/_error.page";
 import Head from "next/head";
 import Image from "next/image";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect } from "react";
 import { List } from "react-bootstrap-icons";
 import { HeaderDTO } from "../../interface/types";
 
@@ -14,34 +15,9 @@ export const Header: FC<HeaderDTO> = ({
   setListFlag,
   listClickRef,
 }) => {
-  const user = supabase.auth.user();
-  const [avatar, setAvatar] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const getAvatarUrl = async () => {
-    try {
-      setLoading(false);
-      let { data, error, status } = await supabase
-      .from("users")
-      .select("avatar_url")
-      .eq("id", user?.id)
-      .single();
-      if (error && status !== 406) {
-        throw error;
-      }
-      if (data) {
-        setAvatar(data?.avatar_url);
-      }
-    } catch (error: any) {
-      alert(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
-  useEffect(() => {
-    getAvatarUrl();
-  });
+  const { data: notes, status, isError, error } = useQueryAvatarImage();
+  console.log("🚀 ~ file: index.tsx ~ line 19 ~ isError", isError);
+  console.log("🚀 ~ file: index.tsx ~ line 19 ~ error", error);
 
   /**
    * theme切り替え
@@ -62,7 +38,6 @@ export const Header: FC<HeaderDTO> = ({
   const listClick = useCallback(() => {
     setListFlag((listFlag) => !listFlag);
   }, [listFlag]);
-
   /**
    * ダークモード対応
    */
@@ -79,6 +54,11 @@ export const Header: FC<HeaderDTO> = ({
       document.querySelector("html")?.classList.remove("dark");
     }
   }, [darkMode]);
+
+  if (status === "error") {
+    const errCode = Number(error);
+    return <Error statusCode={errCode} />;
+  }
 
   return (
     <>
@@ -120,16 +100,16 @@ export const Header: FC<HeaderDTO> = ({
             />
             <label htmlFor="toggle" className="toggle-label"></label>
           </div>
-          {avatar && (
-              <div className="mr-3">
-                <Image
-                  src={avatar}
-                  alt="ログイン画像"
-                  width={32}
-                  height={32}
-                  className="rounded-full bg-center"
-                />
-              </div>
+          {notes && (
+            <div className="mr-3">
+              <Image
+                src={notes?.avatar_url}
+                alt="ログイン画像"
+                width={32}
+                height={32}
+                className="rounded-full bg-center"
+              />
+            </div>
           )}
         </div>
       </header>

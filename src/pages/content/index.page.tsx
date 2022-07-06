@@ -1,8 +1,9 @@
 import { NoteDTO } from "@/interface/types";
 import { supabase } from "@/util/supabase";
 import { PencilIcon, SearchIcon } from "@heroicons/react/solid";
-import Pagination from "@mui/material/Pagination";
 import { makeStyles } from "@material-ui/styles";
+import Pagination from "@mui/material/Pagination";
+import { PostgrestError } from "@supabase/supabase-js";
 import { format } from "date-fns";
 import ja from "date-fns/locale/ja";
 import { GetStaticProps, NextPage } from "next";
@@ -11,6 +12,7 @@ import { useRouter } from "next/router";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { Header } from "../../layout/Header";
 import { SideBar } from "../../layout/SideBar.tsx";
+import Error from "../_error.page";
 const useStyles = makeStyles(() => ({
   root: {
     "& .MuiPaginationItem-root": {
@@ -20,9 +22,11 @@ const useStyles = makeStyles(() => ({
 }));
 type StaticProps = {
   notes: NoteDTO[];
+  error: PostgrestError | null;
+  status: number;
 };
 
-const ContentPage: NextPage<StaticProps> = ({ notes }) => {
+const ContentPage: NextPage<StaticProps> = ({ notes, error, status }) => {
   console.log("🚀 ~ file: index.page.tsx ~ line 25 ~ notes", notes);
   const [darkMode, setDarkMode] = useState(false);
   const [listFlag, setListFlag] = useState(false);
@@ -62,6 +66,10 @@ const ContentPage: NextPage<StaticProps> = ({ notes }) => {
   const logout = () => {
     supabase.auth.signOut();
   };
+
+  if (error && status !== 406) {
+    return <Error statusCode={status} />;
+  }
 
   return (
     <div
@@ -174,16 +182,13 @@ export default ContentPage;
 
 export const getStaticProps: GetStaticProps = async () => {
   console.log("ISR invoked - notes page");
-  const { data: notes, error } = await supabase
-    .from("notes")
-    .select(
-      "id, created_at, content, user_id, title, openFlag, users (email, full_name, avatar_url)",
-    );
-  if (error) {
-    throw new Error(`${error.message}: ${error.details}`);
-  }
+  const {
+    data: notes,
+    error,
+    status,
+  } = await supabase.from("notes").select("*, users(*)");
   return {
-    props: { notes },
+    props: { notes, error, status },
     revalidate: false,
   };
 };

@@ -13,9 +13,11 @@ export default async function handler(
   res: NextApiResponse<Data | Msg>,
 ) {
   console.log("Revalidataing notes page...");
-  if (req.query.secret !== process.env.REVALIDATE_SECRET) {
-    return res.status(401).json({ message: "Your secret is invalid !" });
-  }
+
+  
+  // if (req.query.secret !== process.env.REVALIDATE_SECRET) {
+  //   return res.status(401).json({ message: "Your secret is invalid !" });
+  // }
   let revalidated = false;
   try {
     await res.revalidate("/content");
