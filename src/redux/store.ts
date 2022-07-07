@@ -1,5 +1,5 @@
 import {
-  CreateCommentDTO,
+  EditCommentsDTO,
   EditNoteDTO,
   EditTaskDTO,
   NewsVariableDTO,
@@ -12,17 +12,17 @@ type State = {
   editNote: EditNoteDTO;
   selectNews: NewsVariableDTO;
   updateNews: UpdateNewsDTO;
-  editComment: CreateCommentDTO;
+  editComment: EditCommentsDTO;
   setEditNote: (payload: EditNoteDTO) => void;
   setEditTask: (payload: EditTaskDTO) => void;
+  setEditComment: (payload: EditCommentsDTO) => void;
   setEditTitle: (payload: NewsVariableDTO) => void;
   setUpdateNewsReducer: (payload: UpdateNewsDTO) => void;
-  setCommentNewsReducer: (payload: CreateCommentDTO) => void;
   resetEditNote: () => void;
+  resetEditComment: () => void;
   resetEditTask: () => void;
   resetUpdateNews: () => void;
   resetEditTitle: () => void;
-  resetCommentNewsReducer: () => void;
 };
 
 const useStore = create<State>((set) => ({
@@ -55,10 +55,10 @@ const useStore = create<State>((set) => ({
     orderNo: 0,
   },
   editComment: {
-    groupNewsId: "",
-    commentText: "",
-    commentName: "",
-    commentPhotURL: "",
+    title: "",
+    content: "",
+    note_id: "",
+    user_id: "",
   },
   setEditNote: (payload) =>
     set({
@@ -97,13 +97,13 @@ const useStore = create<State>((set) => ({
         orderNo: payload.orderNo,
       },
     }),
-  setCommentNewsReducer: (payload) =>
+  setEditComment: (payload) =>
     set({
       editComment: {
-        groupNewsId: payload.groupNewsId,
-        commentText: payload.commentText,
-        commentName: payload.commentName,
-        commentPhotURL: payload.commentPhotURL,
+        title: payload.title,
+        content: payload.content,
+        note_id: payload.note_id,
+        user_id: payload.user_id,
       },
     }),
   resetEditNote: () =>
@@ -143,7 +143,7 @@ const useStore = create<State>((set) => ({
         isFlag: true,
       },
     }),
-  resetCommentNewsReducer: () =>
+  resetEditComment: () =>
     set({
       editTask: {
         id: "",

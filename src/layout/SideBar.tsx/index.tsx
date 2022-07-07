@@ -57,8 +57,8 @@ export const SideBar: FC<SideBarDTO> = ({
     document.addEventListener("mousedown", handleOutsideClick);
     if (router.pathname === "/content") {
       return setSelectMode("content");
-    } else if (router.pathname === "/post") {
-      return setSelectMode("post");
+    } else if (router.pathname === "/edit") {
+      return setSelectMode("edit");
     } else if (router.pathname === "/setting") {
       return setSelectMode("setting");
     } else if (router.pathname === "/profile") {

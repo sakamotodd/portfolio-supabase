@@ -15,6 +15,7 @@ export interface CommentsDTO {
   created_at: string;
   note_id: string;
   user_id: string | undefined;
+  users: UsersDTO;
 }
 export interface NoteDTO {
   id: string;
@@ -90,12 +91,7 @@ export interface PrivateNewsDTO {
     };
   };
 }
-export interface CreateCommentDTO {
-  groupNewsId: string;
-  commentText: string;
-  commentPhotURL: string;
-  commentName: string;
-}
+
 
 export interface GetCommentNewsDTO {
   commentId: string;
