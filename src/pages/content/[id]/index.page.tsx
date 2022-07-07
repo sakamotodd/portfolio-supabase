@@ -29,7 +29,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { ParsedUrlQuery } from "querystring";
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
@@ -52,6 +52,7 @@ type StaticProps = {
 };
 
 const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
+  const [userId, setUserId] = useState<string | undefined>("");
   const note = notes.note;
   const commentInfo = comments.comments;
   console.log("🚀 ~ file: index.page.tsx ~ line 56 ~ comment", commentInfo);
@@ -70,6 +71,11 @@ const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
       user_id: supabase.auth.user()?.id,
     });
   };
+
+  useEffect(() => {
+    setUserId(supabase.auth.user()?.id);
+  }, []);
+
   if (notes.error && notes.status !== 406) {
     return <Error statusCode={notes.status} />;
   }
@@ -83,20 +89,23 @@ const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
     return <Spinner />;
   }
 
+
   return (
     <Layout title="個別ページ">
       <div className="flex flex-col items-center justify-center font-sans text-black dark:text-white">
         <div className="mt-4 h-full w-full md:w-3/4 xl:w-1/2">
-          <div className="mb-4 flex items-center justify-end">
-            <Link href={`/content/${note.id}/update`} prefetch={false}>
-              <button
-                type="button"
-                className="rounded-lg bg-purple-700 py-2 px-4 font-medium text-white shadow-md transition-colors hover:bg-purple-600"
-              >
-                編集
-              </button>
-            </Link>
-          </div>
+          {userId === note.user_id && (
+            <div className="mb-4 flex items-center justify-end">
+              <Link href={`/update/${note.id}`} prefetch={false}>
+                <button
+                  type="button"
+                  className="rounded-lg bg-purple-700 py-2 px-4 font-medium text-white shadow-md transition-colors hover:bg-purple-600"
+                >
+                  編集
+                </button>
+              </Link>
+            </div>
+          )}
           <div className="mb-2 flex items-center">
             <DocumentTextIcon className="h-8 w-8 text-blue-500" />
             <span className="pl-1 text-2xl font-bold">{note.title}</span>

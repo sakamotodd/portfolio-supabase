@@ -3,25 +3,25 @@ import {
   EditNoteDTO,
   EditTaskDTO,
   NewsVariableDTO,
-  UpdateNewsDTO,
+  UpdateNoteDTO,
 } from "@/interface/types";
 import create from "zustand";
 
 type State = {
   editTask: EditTaskDTO;
   editNote: EditNoteDTO;
+  updateNote: UpdateNoteDTO;
   selectNews: NewsVariableDTO;
-  updateNews: UpdateNewsDTO;
   editComment: EditCommentsDTO;
   setEditNote: (payload: EditNoteDTO) => void;
   setEditTask: (payload: EditTaskDTO) => void;
   setEditComment: (payload: EditCommentsDTO) => void;
   setEditTitle: (payload: NewsVariableDTO) => void;
-  setUpdateNewsReducer: (payload: UpdateNewsDTO) => void;
+  setUpdateNote: (payload: UpdateNoteDTO) => void;
   resetEditNote: () => void;
   resetEditComment: () => void;
+  resetUpdateNote: () => void;
   resetEditTask: () => void;
-  resetUpdateNews: () => void;
   resetEditTitle: () => void;
 };
 
@@ -48,11 +48,11 @@ const useStore = create<State>((set) => ({
     isFlag: true,
   },
 
-  updateNews: {
+  updateNote: {
     id: "",
     content: "",
     title: "",
-    orderNo: 0,
+    openFlag: true,
   },
   editComment: {
     title: "",
@@ -88,13 +88,13 @@ const useStore = create<State>((set) => ({
         isFlag: payload.isFlag,
       },
     }),
-  setUpdateNewsReducer: (payload) =>
+  setUpdateNote: (payload) =>
     set({
-      updateNews: {
+      updateNote: {
         id: payload.id,
         content: payload.content,
         title: payload.title,
-        orderNo: payload.orderNo,
+        openFlag: payload.openFlag,
       },
     }),
   setEditComment: (payload) =>
@@ -123,13 +123,13 @@ const useStore = create<State>((set) => ({
         mail: "",
       },
     }),
-  resetUpdateNews: () =>
+  resetUpdateNote: () =>
     set({
-      updateNews: {
+      updateNote: {
         id: "",
         content: "",
         title: "",
-        orderNo: 0,
+        openFlag: true,
       },
     }),
   resetEditTitle: () =>

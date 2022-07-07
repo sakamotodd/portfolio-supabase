@@ -38,6 +38,13 @@ export interface PrivateNoteDTO {
   comments: CommentsDTO[];
 }
 
+export interface UpdateNoteDTO {
+  id: string;
+  content: string;
+  title: string;
+  openFlag: boolean;
+}
+
 export interface EditNoteDTO {
   content: string;
   title: string;
@@ -51,6 +58,10 @@ export interface EditCommentsDTO {
   note_id: string;
   user_id: string | undefined;
 }
+
+
+
+
 
 export interface NewsDTO {
   id: string;
@@ -111,18 +122,6 @@ export interface NewsVariableDTO {
   isFlag: boolean;
 }
 
-export interface UpdateNewsDTO {
-  id: string;
-  content: string;
-  title: string;
-  orderNo: number;
-}
-
-export interface UpdateNewDTO {
-  title?: string;
-  content: string;
-  id: any;
-}
 export interface TaskDTO {
   id: string;
   title: string;

@@ -1,10 +1,11 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useMutateContent } from "@/hooks/useMutateContent";
+import { PrivateNoteDTO } from "@/interface/types";
 import Error from "@/pages/_error.page";
 import useStore from "@/redux/store";
 import { supabase } from "@/util/supabase";
 
-import { FC, FormEvent } from "react";
+import { FC, FormEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
@@ -12,28 +13,42 @@ import { Spinner } from "../Spinner";
 import CommonMarkdown from "./CommonMarkdown";
 import { useMarkdownArea } from "./useMarkdownArea";
 
-const EditMarkdown: FC = () => {
+type fetchNotes = {
+  notes: Omit<PrivateNoteDTO, "comments">;
+};
+
+const UpdateMarkdown: FC<fetchNotes> = ({ notes }) => {
+
   const { markdownRef, setEnterPress, components } = useMarkdownArea();
-  const create = useStore((state) => state.setEditNote);
-  const { createNoteMutation } = useMutateContent();
-  const { editNote } = useStore();
+  const update = useStore((state) => state.setUpdateNote);
+  const { updateNoteMutation } = useMutateContent();
+  const { updateNote } = useStore();
 
   const submitHandle = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createNoteMutation.mutate({
-      title: editNote.title,
-      content: editNote.content,
-      openFlag: editNote.openFlag,
-      user_id: supabase.auth.user()?.id,
+    updateNoteMutation.mutate({
+      title: updateNote.title,
+      content: updateNote.content,
+      openFlag: updateNote.openFlag,
+      id: notes.id,
     });
   };
 
-  if (createNoteMutation.isLoading) {
+  useEffect(() => {
+    update({
+      title: notes.title,
+      content: notes.content,
+      openFlag: notes.openFlag,
+      id: notes.id,
+    });
+  },[]);
+
+  if (updateNoteMutation.isLoading) {
     return <Spinner />;
   }
 
-  if (createNoteMutation.error) {
-    const status = Number(createNoteMutation.error)
+  if (updateNoteMutation.error) {
+    const status = Number(updateNoteMutation.error);
     return <Error statusCode={status} />;
   }
 
@@ -44,14 +59,14 @@ const EditMarkdown: FC = () => {
           <button
             type="submit"
             className="ml-2 rounded-lg bg-purple-700 py-2 px-4 font-medium text-white shadow-md transition-colors hover:bg-purple-600"
-            onClick={() => create({ ...editNote, openFlag: false })}
+            onClick={() => update({ ...updateNote, openFlag: false })}
           >
             ローカルに保存
           </button>
           <button
             type="submit"
             className="ml-2 rounded-lg bg-purple-700 py-2 px-4 font-medium text-white shadow-md transition-colors hover:bg-purple-600"
-            onClick={() => create({ ...editNote, openFlag: true })}
+            onClick={() => update({ ...updateNote, openFlag: true })}
           >
             一覧ページに投稿
           </button>
@@ -59,8 +74,8 @@ const EditMarkdown: FC = () => {
         <input
           type="text"
           placeholder="タイトル"
-          value={editNote.title}
-          onChange={(e) => create({ ...editNote, title: e.target.value })}
+          value={updateNote.title}
+          onChange={(e) => update({ ...updateNote, title: e.target.value })}
           className="mx-auto mb-5 block h-14 w-full bg-slate-100 text-2xl font-bold outline-none dark:bg-darkBody"
         />
         <div className="flex h-[35rem] max-w-[80rem] justify-center">
@@ -69,9 +84,9 @@ const EditMarkdown: FC = () => {
             <textarea
               ref={markdownRef}
               placeholder="Markdownで記述"
-              className="h-[90%] w-full resize-none border bg-white py-4 px-2 shadow-md focus:outline-none dark:text-black dark:bg-darkGrey"
-              value={editNote.content}
-              onChange={(e) => create({ ...editNote, content: e.target.value })}
+              className="h-[90%] w-full resize-none border bg-white py-4 px-2 shadow-md focus:outline-none dark:bg-darkGrey"
+              value={updateNote.content}
+              onChange={(e) => update({ ...updateNote, content: e.target.value })}
               onKeyPress={setEnterPress}
             ></textarea>
           </div>
@@ -85,7 +100,7 @@ const EditMarkdown: FC = () => {
                 ]}
                 components={components}
               >
-                {editNote.content}
+                {updateNote.content}
               </ReactMarkdown>
             </div>
           </div>
@@ -95,4 +110,4 @@ const EditMarkdown: FC = () => {
   );
 };
 
-export default EditMarkdown;
+export default UpdateMarkdown;
