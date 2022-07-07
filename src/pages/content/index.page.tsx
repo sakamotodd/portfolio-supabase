@@ -27,7 +27,6 @@ type StaticProps = {
 };
 
 const ContentPage: NextPage<StaticProps> = ({ notes, error, status }) => {
-  console.log("🚀 ~ file: index.page.tsx ~ line 25 ~ notes", notes);
   const [darkMode, setDarkMode] = useState(false);
   const [listFlag, setListFlag] = useState(false);
   const [pageDataMax, setPageDataMax] = useState<number>(10);

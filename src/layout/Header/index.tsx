@@ -15,9 +15,7 @@ export const Header: FC<HeaderDTO> = ({
   setListFlag,
   listClickRef,
 }) => {
-  const { data: notes, status, isError, error } = useQueryAvatarImage();
-  console.log("🚀 ~ file: index.tsx ~ line 19 ~ isError", isError);
-  console.log("🚀 ~ file: index.tsx ~ line 19 ~ error", error);
+  const { data: notes, status, error } = useQueryAvatarImage();
 
   /**
    * theme切り替え

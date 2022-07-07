@@ -20,10 +20,6 @@ const EditMarkdown: FC = () => {
 
   const submitHandle = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(
-      "🚀 ~ file: EditMarkdown.tsx ~ line 25 ~ submitHandle ~ editNote",
-      editNote,
-    );
     createNoteMutation.mutate({
       title: editNote.title,
       content: editNote.content,

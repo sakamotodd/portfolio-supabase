@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import toast from "react-hot-toast";
 
 type Data = {
   revalidated: boolean;
@@ -12,9 +13,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data | Msg>,
 ) {
-  console.log("Revalidataing notes page...");
+  console.log("🚀 ~ file: api/revalidate ~ res", res);
+  console.log("🚀 ~file:  api/revalidate ~ req", req);
 
-  
   // if (req.query.secret !== process.env.REVALIDATE_SECRET) {
   //   return res.status(401).json({ message: "Your secret is invalid !" });
   // }
@@ -22,8 +23,8 @@ export default async function handler(
   try {
     await res.revalidate("/content");
     revalidated = true;
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    toast.error(error.message);
   }
   res.json({
     revalidated,

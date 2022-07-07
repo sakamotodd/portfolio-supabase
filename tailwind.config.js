@@ -10,7 +10,7 @@ module.exports = {
       backgroundColor: ["autofill", "dark"],
       screens: {
         maxLg: { max: "767px" },
-        maxLg: { max: "1024px" },
+        maxXl: { max: "1024px" },
         max2Xl: { max: "1536px" },
         bwMd: { min: "768px", max: "1023px" },
       },

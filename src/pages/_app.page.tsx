@@ -1,4 +1,7 @@
 import "@/styles/globals.css";
+import "@/styles/Header.css";
+import "@/styles/markdown.css";
+import "tailwindcss/tailwind.css";
 import { supabase } from "@/util/supabase";
 import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
@@ -9,17 +12,11 @@ import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import "../styles/Header.css";
-import "../styles/markdown.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const pathName = ["content", "edit", "setting", "profile", "search"];
   const validateSession = async () => {
-    console.log(
-      "🚀 ~ file: _app.page.tsx ~ line 17 ~ MyApp ~ pathname",
-      router.pathname,
-    );
     const user = supabase.auth.user();
     const path = pathName.find((name) => {
       return router.pathname === name;
@@ -40,10 +37,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     } else return;
   };
   supabase.auth.onAuthStateChange((event, session) => {
-    console.log(
-      "🚀 ~ file: _app.page.tsx ~ line 37 ~ supabase.auth.onAuthStateChange ~ event",
-      event,
-    );
     if (event === "SIGNED_IN") {
       router.push("/content");
     }

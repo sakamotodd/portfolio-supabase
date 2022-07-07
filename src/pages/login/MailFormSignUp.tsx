@@ -17,6 +17,7 @@ import {
 import { useForm, yupResolver } from "@mantine/form";
 import { useRouter } from "next/router";
 import { ChangeEvent, FC, useState } from "react";
+import toast from "react-hot-toast";
 
 export const MailFormSignUp: FC = () => {
   const router = useRouter();
@@ -65,7 +66,8 @@ export const MailFormSignUp: FC = () => {
       .from("avatars")
       .upload(fileName, file);
     if (error) {
-      console.log(error);
+      toast.error(error.message);
+      throw new Error(error.message)
     }
     setAvatarUrl(
       `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/avatars/${fileName}`,
