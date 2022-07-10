@@ -9,7 +9,7 @@ import Pagination from "@mui/material/Pagination";
 import { PostgrestError } from "@supabase/supabase-js";
 import { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { ContentItem } from "./ContentItem";
 
 const useStyles = makeStyles(() => ({
@@ -31,8 +31,9 @@ const ContentPage: NextPage<StaticProps> = ({ notes, error, status }) => {
   const [pageDataMax, setPageDataMax] = useState<number>(10);
   const [pageDataMin, setPageDataMin] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
+  const [pageNumber] = useState(Math.ceil(notes?.length / 10));
+
   const listClickRef = useRef<HTMLButtonElement>(null!);
-  const pageNumber = Math.ceil(notes?.length / 10);
   const classes = useStyles();
   const router = useRouter();
   // 投稿ページ遷移ボタン(onClick)
@@ -43,20 +44,14 @@ const ContentPage: NextPage<StaticProps> = ({ notes, error, status }) => {
     [router],
   );
 
-  // ページネーション表示データ
-  useEffect(() => {
-    if (router.query.page) {
-      setPage(Number(router.query.page));
-    }
-  }, [router.query.page]);
-
   // ページネーション(onClick)
   const handlePageNation = useCallback(
-    (e: ChangeEvent<HTMLInputElement>, value: number) => {
+    (e: ChangeEvent<unknown>, value: number) => {
+      console.log("🚀 ~ file: index.page.tsx ~ line 57 ~ value", value);
       setPage(value);
       setPageDataMax(10 * value);
       setPageDataMin(10 * (value - 1));
-      router.push(`content/?page=${value}`, undefined, { shallow: true });
+      // router.push(`content/?page=${value}`);
     },
     [router],
   );
@@ -142,7 +137,7 @@ const ContentPage: NextPage<StaticProps> = ({ notes, error, status }) => {
               count={pageNumber}
               color="primary"
               page={page}
-              onChange={(e) => handlePageNation}
+              onChange={(e, page) => handlePageNation(e, page)}
             />
           </div>
         </div>

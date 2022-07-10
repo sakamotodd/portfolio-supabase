@@ -3,8 +3,9 @@ import { useMutateContent } from "@/hooks/useMutateContent";
 import Error from "@/pages/_error.page";
 import useStore from "@/redux/store";
 import { supabase } from "@/util/supabase";
+import { useRouter } from "next/router";
 
-import { FC, FormEvent } from "react";
+import { FC, FormEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
@@ -14,6 +15,7 @@ import { useMarkdownArea } from "./useMarkdownArea";
 
 const EditMarkdown: FC = () => {
   const { markdownRef, setEnterPress, components } = useMarkdownArea();
+  const [moveFlag, setMoveFlag] = useState(false);
   const create = useStore((state) => state.setEditNote);
   const { createNoteMutation } = useMutateContent();
   const { editNote } = useStore();
@@ -28,12 +30,17 @@ const EditMarkdown: FC = () => {
     });
   };
 
+  const createButtonHandle = (flag: boolean) => {
+    create({ ...editNote, openFlag: flag });
+    setMoveFlag(true);
+  };
+
   if (createNoteMutation.isLoading) {
     return <Spinner />;
   }
 
   if (createNoteMutation.error) {
-    const status = Number(createNoteMutation.error)
+    const status = Number(createNoteMutation.error);
     return <Error statusCode={status} />;
   }
 
@@ -44,14 +51,14 @@ const EditMarkdown: FC = () => {
           <button
             type="submit"
             className="ml-2 rounded-lg bg-purple-700 py-2 px-4 font-medium text-white shadow-md transition-colors hover:bg-purple-600"
-            onClick={() => create({ ...editNote, openFlag: false })}
+            onClick={() => createButtonHandle(false)}
           >
             ローカルに保存
           </button>
           <button
             type="submit"
             className="ml-2 rounded-lg bg-purple-700 py-2 px-4 font-medium text-white shadow-md transition-colors hover:bg-purple-600"
-            onClick={() => create({ ...editNote, openFlag: true })}
+            onClick={() => createButtonHandle(true)}
           >
             一覧ページに投稿
           </button>
@@ -69,7 +76,7 @@ const EditMarkdown: FC = () => {
             <textarea
               ref={markdownRef}
               placeholder="Markdownで記述"
-              className="h-[90%] w-full resize-none border bg-white py-4 px-2 shadow-md focus:outline-none dark:text-black dark:bg-darkGrey"
+              className="h-[90%] w-full resize-none border bg-white py-4 px-2 shadow-md focus:outline-none dark:bg-darkGrey dark:text-black"
               value={editNote.content}
               onChange={(e) => create({ ...editNote, content: e.target.value })}
               onKeyPress={setEnterPress}

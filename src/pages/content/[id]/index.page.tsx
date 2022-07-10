@@ -2,7 +2,7 @@
 import CommonMarkdown from "@/components/markdown/CommonMarkdown";
 import { useMarkdownArea } from "@/components/markdown/useMarkdownArea";
 import { Spinner } from "@/components/Spinner";
-import { useMutateContent } from "@/hooks/useMutateContent";
+import { useMutateComment } from "@/hooks/useMutateComment";
 import { CommentsDTO, PrivateNoteDTO } from "@/interface/types";
 import { Layout } from "@/layout/Layout";
 import Error from "@/pages/_error.page";
@@ -59,7 +59,7 @@ const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
   console.log("🚀 ~ file: index.page.tsx ~ line 35 ~ note", note);
   const { markdownRef, setEnterPress, components } = useMarkdownArea();
   const createComment = useStore((state) => state.setEditComment);
-  const { createCommentMutaiton } = useMutateContent();
+  const { createCommentMutaiton } = useMutateComment();
   const { editComment } = useStore();
 
   const submitHandle = (e: FormEvent<HTMLFormElement>) => {
@@ -88,7 +88,6 @@ const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
   if (createCommentMutaiton.isLoading) {
     return <Spinner />;
   }
-
 
   return (
     <Layout title="個別ページ">
