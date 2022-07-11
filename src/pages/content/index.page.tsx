@@ -153,7 +153,10 @@ export const getStaticProps: GetStaticProps = async () => {
     data: notes,
     error,
     status,
-  } = await supabase.from("notes").select("*, users(*)");
+  } = await supabase
+    .from("notes")
+    .select("*, users(*)")
+    .order("created_at", { ascending: false });
   return {
     props: { notes, error, status },
     revalidate: false,

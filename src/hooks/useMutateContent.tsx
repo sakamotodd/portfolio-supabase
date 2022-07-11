@@ -69,7 +69,6 @@ export const useMutateContent = () => {
   /**
    * DELETE note by update/[id]
    */
-
   const deleteNoteMutation = useMutation(
     async (id: string) => {
       const { data, error, status } = await supabase

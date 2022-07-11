@@ -76,7 +76,7 @@ const EditMarkdown: FC = () => {
             <textarea
               ref={markdownRef}
               placeholder="Markdownで記述"
-              className="h-[90%] w-full resize-none border bg-white py-4 px-2 shadow-md focus:outline-none dark:bg-darkGrey dark:text-black"
+              className="h-[90%] w-full resize-none border bg-white py-4 px-2 shadow-md focus:outline-none dark:bg-darkGrey text-black dark:text-white"
               value={editNote.content}
               onChange={(e) => create({ ...editNote, content: e.target.value })}
               onKeyPress={setEnterPress}

@@ -1,4 +1,4 @@
-import { EditCommentsDTO } from "@/interface/types";
+import { EditCommentsDTO, UpdateCommentsDTO } from "@/interface/types";
 import useStore from "@/redux/store";
 import { revalidatePrivate } from "@/util/revalidate";
 import { supabase } from "@/util/supabase";
@@ -9,7 +9,7 @@ export const useMutateComment = () => {
   const resetInsertComment = useStore((state) => state.resetEditComment);
 
   /**
-   * Insert comments As create comment by content/[id]
+   * Insert comments by content/[id]
    */
   const createCommentMutaiton = useMutation(
     async (comments: EditCommentsDTO) => {
@@ -23,10 +23,6 @@ export const useMutateComment = () => {
     },
     {
       onSuccess: (res: any) => {
-        console.log(
-          "🚀 ~ file: useMutateContent.tsx ~ line 51 ~ useMutateContent ~ res",
-          res,
-        );
         revalidatePrivate(res[0].note_id);
         resetInsertComment;
         toast.success("コメントの書き込みに成功しました。");
@@ -39,8 +35,33 @@ export const useMutateComment = () => {
   );
 
   /**
-   * 
+   *  Update comments by content/[id]
    */
-
-  return { createCommentMutaiton };
+  const updateCommentMutation = useMutation(
+    async (comments: UpdateCommentsDTO) => {
+      const { data, error, status } = await supabase
+        .from("comments")
+        .update({
+          title: comments.title,
+          content: comments.content,
+        })
+        .eq("id", comments.id);
+      if (error && status !== 406) {
+        throw status;
+      }
+      return data;
+    },
+    {
+      onSuccess: (res: any) => {
+        revalidatePrivate(res[0].note_id);
+        resetInsertComment;
+        toast.success("コメントの更新に成功しました。");
+      },
+      onError: (error: any) => {
+        toast.error("コメントの更新にに失敗しました。再度やり直して下さい。");
+        resetInsertComment;
+      },
+    },
+  );
+  return { createCommentMutaiton, updateCommentMutation };
 };

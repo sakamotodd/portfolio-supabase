@@ -58,20 +58,10 @@ export interface EditCommentsDTO {
   note_id: string;
   user_id: string | undefined;
 }
-
-
-
-
-
-export interface NewsDTO {
+export interface UpdateCommentsDTO {
   id: string;
   content: string;
-  created_at: string;
   title: string;
-  name: string;
-  email: string;
-  photoURL: string;
-  token_id: string;
 }
 
 export interface UserNewsDTO {
@@ -84,65 +74,6 @@ export interface UserNewsDTO {
   title: string;
   content: string;
   orderNo: number;
-}
-
-export interface PrivateNewsDTO {
-  comments: GetCommentNewsDTO[];
-  id: string;
-  content: string;
-  created_at: string;
-  orderNo: number;
-  title: string;
-  name: string;
-  email: string;
-  photoURL: string;
-  news_aggregate: {
-    aggregate: {
-      count: string;
-    };
-  };
-}
-
-
-export interface GetCommentNewsDTO {
-  commentId: string;
-  commentText: string;
-  commentOrderNo: number;
-  group_news_id: string;
-  comment_name: string;
-  comment_photURL: string;
-  comment_create_at: string;
-}
-export interface NewsVariableDTO {
-  content: string;
-  title: string;
-  name: string;
-  email: string;
-  photoURL: string;
-  isFlag: boolean;
-}
-
-export interface TaskDTO {
-  id: string;
-  title: string;
-  created_at: string;
-  user_id: string;
-  mail: string;
-}
-export interface EditTaskDTO {
-  id: string;
-  title: string;
-  mail: string;
-}
-
-export interface CreateTaskDTO {
-  title: string;
-  mail: string;
-}
-
-export interface UpdateTaskDTO {
-  id: string;
-  title: string;
 }
 
 export interface LayoutDTO {

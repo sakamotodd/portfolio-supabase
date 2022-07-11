@@ -14,6 +14,7 @@ import {
   DocumentTextIcon,
   HeartIcon,
   PencilAltIcon,
+  TrashIcon,
   UserCircleIcon,
 } from "@heroicons/react/solid";
 import { PostgrestError } from "@supabase/supabase-js";
@@ -55,8 +56,6 @@ const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
   const [userId, setUserId] = useState<string | undefined>("");
   const note = notes.note;
   const commentInfo = comments.comments;
-  console.log("🚀 ~ file: index.page.tsx ~ line 56 ~ comment", commentInfo);
-  console.log("🚀 ~ file: index.page.tsx ~ line 35 ~ note", note);
   const { markdownRef, setEnterPress, components } = useMarkdownArea();
   const createComment = useStore((state) => state.setEditComment);
   const { createCommentMutaiton } = useMutateComment();
@@ -180,9 +179,24 @@ const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
                           <p className="font-bold">{comment.title}</p>
                         </div>
                       </div>
-                      <span className="text-gray-500 dark:text-gray-400">
-                        {" "}
-                        {`
+                      <div className="flex flex-col items-end">
+                        {userId === comment.user_id && (
+                          <div className="flex">
+                            <button>
+                              <label>
+                                <TrashIcon className="mr-2 h-4 w-4 cursor-pointer text-red-500" />
+                              </label>
+                            </button>
+                            <button>
+                              <label>
+                                <PencilAltIcon className="h-4 w-4 cursor-pointer text-blue-500" />
+                              </label>
+                            </button>
+                          </div>
+                        )}
+                        <span className="text-gray-500 dark:text-gray-400">
+                          {" "}
+                          {`
                       ${format(
                         new Date(comment.created_at),
                         "yyyy年MM月dd (EEE)",
@@ -190,8 +204,9 @@ const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
                           locale: ja,
                         },
                       )}にコメント
-                      `}
-                      </span>
+                        `}
+                        </span>
+                      </div>
                     </div>
                     <div className="pl-16 pr-8 pb-4 text-sm">
                       <ReactMarkdown
@@ -220,7 +235,7 @@ const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
                 <CommonMarkdown />
                 <input
                   type="text"
-                  className="h-1/6 w-full border py-4 px-2 shadow-md focus:outline-none dark:bg-darkGrey"
+                  className="h-1/6 w-full border py-4 px-2 font-bold shadow-md focus:outline-none dark:bg-darkGrey"
                   placeholder="タイトル"
                   value={editComment.title}
                   onChange={(e) =>
