@@ -11,7 +11,7 @@ import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import { Spinner } from "../Spinner";
 import CommonMarkdown from "./CommonMarkdown";
-import { useMarkdownArea } from "./useMarkdownArea";
+import { useMarkdownArea } from "../../hooks/useMarkdownArea";
 
 const EditMarkdown: FC = () => {
   const { markdownRef, setEnterPress, components } = useMarkdownArea();

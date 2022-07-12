@@ -7,7 +7,7 @@ import {
   TypeH3,
   TypeItalic,
 } from "react-bootstrap-icons";
-import { useMarkdownArea } from "./useMarkdownArea";
+import { useMarkdownArea } from "../../hooks/useMarkdownArea";
 
 const CommonMarkdown: FC = () => {
   const { TypeHClick } = useMarkdownArea();

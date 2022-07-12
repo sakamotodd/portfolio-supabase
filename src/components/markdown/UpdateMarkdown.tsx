@@ -3,16 +3,15 @@ import { useMutateContent } from "@/hooks/useMutateContent";
 import { PrivateNoteDTO } from "@/interface/types";
 import Error from "@/pages/_error.page";
 import useStore from "@/redux/store";
-import { Alert, Modal } from "@mantine/core";
 
 import { FC, FormEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
-import { AlertCircle } from "tabler-icons-react";
+import { useMarkdownArea } from "../../hooks/useMarkdownArea";
+import { DeleteModal } from "../modal/deleteModal";
 import { Spinner } from "../Spinner";
 import CommonMarkdown from "./CommonMarkdown";
-import { useMarkdownArea } from "./useMarkdownArea";
 
 type fetchNotes = {
   notes: Omit<PrivateNoteDTO, "comments">;
@@ -60,34 +59,13 @@ const UpdateMarkdown: FC<fetchNotes> = ({ notes }) => {
 
   return (
     <>
-      <Modal
+      <DeleteModal
         opened={opened}
-        centered
-        onClose={() => setOpened(false)}
-        title="この記事を削除しますか？"
-      >
-        <Alert icon={<AlertCircle size={16} />} title="警告" color="red">
-          <span>{`"${notes.title}"を削除してもよろしいでしょうか？`}</span>
-          <br />
-          <span>この操作は取り消せません。</span>
-        </Alert>
-        <form className="mt-4 flex justify-around" onSubmit={deleteNoteHandle}>
-          <button
-            type="button"
-            className="transition-c1olors ml-2 rounded-lg bg-slate-800 py-2 px-4 font-medium text-white shadow-md hover:bg-slate-700"
-            onClick={() => setOpened(false)}
-          >
-            キャンセル
-          </button>
-          <button
-            type="submit"
-            className="ml-2 rounded-lg bg-red-700 py-2 px-4 font-medium text-white shadow-md transition-colors hover:bg-red-600"
-            onClick={() => setOpened(false)}
-          >
-            削除
-          </button>
-        </form>
-      </Modal>
+        setOpened={setOpened}
+        title={notes.title}
+        id={notes.id}
+        check="notes"
+      />
       <form className="max-w-[80rem]" onSubmit={submitHandle}>
         <div className="mt-4 flex items-center justify-end">
           <button

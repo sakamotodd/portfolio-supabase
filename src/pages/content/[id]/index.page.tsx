@@ -1,6 +1,8 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import CommonMarkdown from "@/components/markdown/CommonMarkdown";
-import { useMarkdownArea } from "@/components/markdown/useMarkdownArea";
+import PrivateComment from "@/components/markdown/PrivateComment";
+import { useMarkdownArea } from "@/hooks/useMarkdownArea";
+import { UpdateModal } from "@/components/modal/UpdateModal";
 import { Spinner } from "@/components/Spinner";
 import { useMutateComment } from "@/hooks/useMutateComment";
 import { CommentsDTO, PrivateNoteDTO } from "@/interface/types";
@@ -14,12 +16,9 @@ import {
   DocumentTextIcon,
   HeartIcon,
   PencilAltIcon,
-  TrashIcon,
   UserCircleIcon,
 } from "@heroicons/react/solid";
 import { PostgrestError } from "@supabase/supabase-js";
-import { format } from "date-fns";
-import { ja } from "date-fns/locale";
 import {
   GetStaticPaths,
   GetStaticProps,
@@ -54,6 +53,9 @@ type StaticProps = {
 
 const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
   const [userId, setUserId] = useState<string | undefined>("");
+  const [opened, setOpened] = useState(false);
+  const [trashOpen, setTrashOpen] = useState(false)
+  const update = useStore((state) => state.setUpdateComment);
   const note = notes.note;
   const commentInfo = comments.comments;
   const { markdownRef, setEnterPress, components } = useMarkdownArea();
@@ -70,6 +72,7 @@ const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
       user_id: supabase.auth.user()?.id,
     });
   };
+
 
   useEffect(() => {
     setUserId(supabase.auth.user()?.id);
@@ -90,6 +93,7 @@ const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
 
   return (
     <Layout title="個別ページ">
+      <UpdateModal opened={opened} setOpened={setOpened} />
       <div className="flex flex-col items-center justify-center font-sans text-black dark:text-white">
         <div className="mt-4 h-full w-full md:w-3/4 xl:w-1/2">
           {userId === note.user_id && (
@@ -152,78 +156,20 @@ const PrivateContentPage: NextPage<StaticProps> = ({ notes, comments }) => {
                 <span className="pl-1 text-2xl font-bold">コメント一覧</span>
               </div>
             )}
-            <div
+            <ul
               className={`${note.comments?.length > 0 && "rounded-md border"}`}
             >
               {commentInfo?.map((comment) => {
                 return (
-                  <div
+                  <PrivateComment
                     key={comment.created_at}
-                    className="border-b bg-white  dark:bg-darkCard"
-                  >
-                    <div className="flex justify-between py-4 px-4">
-                      <div className="flex items-center justify-center">
-                        {comment.users.avatar_url.length > 0 && (
-                          <Image
-                            src={comment?.users.avatar_url}
-                            alt="アイコン"
-                            width={36}
-                            height={36}
-                            className=" rounded-full bg-center"
-                          />
-                        )}
-                        <div className="flex flex-col pl-2">
-                          <p className="text-xs text-gray-500">
-                            @{comment.users.full_name}
-                          </p>
-                          <p className="font-bold">{comment.title}</p>
-                        </div>
-                      </div>
-                      <div className="flex flex-col items-end">
-                        {userId === comment.user_id && (
-                          <div className="flex">
-                            <button>
-                              <label>
-                                <TrashIcon className="mr-2 h-4 w-4 cursor-pointer text-red-500" />
-                              </label>
-                            </button>
-                            <button>
-                              <label>
-                                <PencilAltIcon className="h-4 w-4 cursor-pointer text-blue-500" />
-                              </label>
-                            </button>
-                          </div>
-                        )}
-                        <span className="text-gray-500 dark:text-gray-400">
-                          {" "}
-                          {`
-                      ${format(
-                        new Date(comment.created_at),
-                        "yyyy年MM月dd (EEE)",
-                        {
-                          locale: ja,
-                        },
-                      )}にコメント
-                        `}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="pl-16 pr-8 pb-4 text-sm">
-                      <ReactMarkdown
-                        className="markdown"
-                        remarkPlugins={[
-                          [remarkGfm, { singleTilde: false }],
-                          [remarkBreaks],
-                        ]}
-                        components={components}
-                      >
-                        {comment.content}
-                      </ReactMarkdown>
-                    </div>
-                  </div>
+                    comment={comment}
+                    userId={userId}
+                    setOpened={setOpened}
+                  />
                 );
               })}
-            </div>
+            </ul>
           </div>
           <form onSubmit={submitHandle}>
             <div className="mb-2 mt-8 flex items-center">

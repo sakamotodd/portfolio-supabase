@@ -63,5 +63,36 @@ export const useMutateComment = () => {
       },
     },
   );
-  return { createCommentMutaiton, updateCommentMutation };
+
+  /**
+   * DELETE note by update/[id]
+   */
+  const deleteCommentMutation = useMutation(
+    async (id: string) => {
+      const { data, error, status } = await supabase
+        .from("comments")
+        .delete()
+        .eq("id", id);
+      if (error && status !== 406) {
+        throw status;
+      }
+      return data;
+    },
+    {
+      onSuccess: (res: any) => {
+        revalidatePrivate(res[0].note_id);
+        resetInsertComment;
+        toast.success("コメントの削除に成功しました。");
+      },
+      onError: () => {
+        toast.error("記事の削除に失敗しました。再度やり直して下さい。");
+        resetInsertComment;
+      },
+    },
+  );
+  return {
+    createCommentMutaiton,
+    updateCommentMutation,
+    deleteCommentMutation,
+  };
 };

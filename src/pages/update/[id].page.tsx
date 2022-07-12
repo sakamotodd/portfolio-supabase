@@ -12,9 +12,6 @@ type StaticProps = {
   status: number;
 };
 const UpdatePage: NextPage<StaticProps> = ({ notes, error, status }) => {
-  console.log("🚀 ~ file: [id].page.tsx ~ line 22 ~ status", status);
-  console.log("🚀 ~ file: [id].page.tsx ~ line 22 ~ error", error);
-  console.log("🚀 ~ file: [id].page.tsx ~ line 22 ~ notes", notes);
   if (error && status !== 406) {
     return <Error statusCode={status} />;
   }
